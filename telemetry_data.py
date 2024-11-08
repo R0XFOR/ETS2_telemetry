@@ -71,6 +71,10 @@ class TelemetryData:
         self.hshifterPosition = 0
         self.hshifterBitmask = 0
 
+        self.jobDeliveredDeliveryTime = 0
+        self.jobStartingTime = 0
+        self.jobFinishedTime = 0
+
 if __name__ == "__main__":
     data = SharedMemory().update()
     print(data.sdkActive, data.paused)
