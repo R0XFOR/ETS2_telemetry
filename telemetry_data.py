@@ -411,16 +411,16 @@ class SharedMemory:
 
             #----- START OF 6TH ZONE AT OFFSET 920 -----#
               
-            tr.id = "" # [stringsize]
-            tr.cargoAcessoryId = "" # [stringsize]
-            tr.bodyType = "" # [stringsize]
-            tr.brandId = "" # [stringsize]
-            tr.brand = "" # [stringsize]
-            tr.name = "" # [stringsize]
-            tr.chainType = "" # [stringsize]
-            tr.licensePlate = "" # [stringsize]
-            tr.licensePlateCountry = "" # [stringsize]
-            tr.licensePlateCountryId = "" # [stringsize]
+            tr.id = self.get_string(tr.START + 920)
+            tr.cargoAcessoryId = self.get_string(tr.START + 984)
+            tr.bodyType = self.get_string(tr.START + 1048)
+            tr.brandId = self.get_string(tr.START + 1112)
+            tr.brand = self.get_string(tr.START + 1176)
+            tr.name = self.get_string(tr.START + 1240)
+            tr.chainType = self.get_string(tr.START + 1304)
+            tr.licensePlate = self.get_string(tr.START + 1432)
+            tr.licensePlateCountry = self.get_string(tr.START + 1496)
+            tr.licensePlateCountryId = self.get_string(tr.START + 1560)
 
             #----- END OF 6TH ZONE AT OFFSET 1559 -----#
 
