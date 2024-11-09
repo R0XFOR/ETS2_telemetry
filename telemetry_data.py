@@ -5,6 +5,11 @@ class SharedMemory:
     def __init__(self) -> None:
         self.map_name = "Local\\SCSTelemetry"
         self.map_size = 32*1024
+
+        self.stringsize = 64
+        self.WHEEL_SIZE = 14
+        self.SUBSTANCE_SIZE = 25
+
         self.mmap = None
 
     def connect(self) -> None:
@@ -191,104 +196,109 @@ class SharedMemory:
 
         #----- START OF SIXTH ZONE AT OFFSET 1640 -----#
 
-        updated_data.cabinPositionX = 0.0
-        updated_data.cabinPositionY = 0.0
-        updated_data.cabinPositionZ = 0.0
-        updated_data.headPositionX = 0.0
-        updated_data.headPositionY = 0.0
-        updated_data.headPositionZ = 0.0
-        updated_data.truckHookPositionX = 0.0
-        updated_data.truckHookPositionY = 0.0
-        updated_data.truckHookPositionZ = 0.0
-        updated_data.truckWheelPositionX = 0.0 # [16]
-        updated_data.truckWheelPositionY = 0.0 # [16]
-        updated_data.truckWheelPositionZ = 0.0 # [16]
+        updated_data.cabinPositionX = self.get_field("f", 1640)
+        updated_data.cabinPositionY = self.get_field("f", 1644)
+        updated_data.cabinPositionZ = self.get_field("f", 1648)
+        updated_data.headPositionX = self.get_field("f", 1652)
+        updated_data.headPositionY = self.get_field("f", 1656)
+        updated_data.headPositionZ = self.get_field("f", 1660)
+        updated_data.truckHookPositionX = self.get_field("f", 1664)
+        updated_data.truckHookPositionY = self.get_field("f", 1668)
+        updated_data.truckHookPositionZ = self.get_field("f", 1672)
+        updated_data.truckWheelPositionX = self.get_array("16f", 1676)
+        updated_data.truckWheelPositionY = self.get_array("16f", 1740)
+        updated_data.truckWheelPositionZ = self.get_array("16f", 1804)
 
-        updated_data.lv_accelerationX = 0.0
-        updated_data.lv_accelerationY = 0.0
-        updated_data.lv_accelerationZ = 0.0
-        updated_data.av_accelerationX = 0.0
-        updated_data.av_accelerationY = 0.0
-        updated_data.av_accelerationZ = 0.0
-        updated_data.accelerationX = 0.0
-        updated_data.accelerationY = 0.0
-        updated_data.accelerationZ = 0.0
-        updated_data.aa_accelerationX = 0.0
-        updated_data.aa_accelerationY = 0.0
-        updated_data.aa_accelerationZ = 0.0
-        updated_data.cabinAVX = 0.0
-        updated_data.cabinAVY = 0.0
-        updated_data.cabinAVZ = 0.0
-        updated_data.cabinAAX = 0.0
-        updated_data.cabinAAY = 0.0
-        updated_data.cabinAAZ = 0.0
+        updated_data.lv_accelerationX = self.get_field("f", 1868)
+        updated_data.lv_accelerationY = self.get_field("f", 1872)
+        updated_data.lv_accelerationZ = self.get_field("f", 1876)
+        updated_data.av_accelerationX = self.get_field("f", 1880)
+        updated_data.av_accelerationY = self.get_field("f", 1884)
+        updated_data.av_accelerationZ = self.get_field("f", 1888)
+        updated_data.accelerationX = self.get_field("f", 1892)
+        updated_data.accelerationY = self.get_field("f", 1896)
+        updated_data.accelerationZ = self.get_field("f", 1900)
+        updated_data.aa_accelerationX = self.get_field("f", 1904)
+        updated_data.aa_accelerationY = self.get_field("f", 1908)
+        updated_data.aa_accelerationZ = self.get_field("f", 1912)
+        updated_data.cabinAVX = self.get_field("f", 1916)
+        updated_data.cabinAVY = self.get_field("f", 1920)
+        updated_data.cabinAVZ = self.get_field("f", 1924)
+        updated_data.cabinAAX = self.get_field("f", 1928)
+        updated_data.cabinAAY = self.get_field("f", 1932)
+        updated_data.cabinAAZ = self.get_field("f", 1936)
 
-        updated_data.cabinOffsetX = 0.0
-        updated_data.cabinOffsetY = 0.0
-        updated_data.cabinOffsetZ = 0.0
-        updated_data.cabinOffsetrotationX = 0.0
-        updated_data.cabinOffsetrotationY = 0.0
-        updated_data.cabinOffsetrotationZ = 0.0
-        updated_data.headOffsetX = 0.0
-        updated_data.headOffsetY = 0.0
-        updated_data.headOffsetZ = 0.0
-        updated_data.headOffsetrotationX = 0.0
-        updated_data.headOffsetrotationY = 0.0
-        updated_data.headOffsetrotationZ = 0.0
+        #----- END OF SIXTH ZONE AT OFFSET 1999 -----#
+
+	    #----- START OF 7TH ZONE AT OFFSET 2000 -----#
+
+        updated_data.cabinOffsetX = self.get_field("f", 2000)
+        updated_data.cabinOffsetY = self.get_field("f", 2004)
+        updated_data.cabinOffsetZ = self.get_field("f", 2008)
+        updated_data.cabinOffsetrotationX = self.get_field("f", 2012)
+        updated_data.cabinOffsetrotationY = self.get_field("f", 2016)
+        updated_data.cabinOffsetrotationZ = self.get_field("f", 2020)
+        updated_data.headOffsetX = self.get_field("f", 2024)
+        updated_data.headOffsetY = self.get_field("f", 2028)
+        updated_data.headOffsetZ = self.get_field("f", 2032)
+        updated_data.headOffsetrotationX = self.get_field("f", 2036)
+        updated_data.headOffsetrotationY = self.get_field("f", 2040)
+        updated_data.headOffsetrotationZ = self.get_field("f", 2044)
 
         #----- END OF 7TH ZONE AT OFFSET 2199 -----#
 
         #----- START OF 8TH ZONE AT OFFSET 2200 -----#
 
-        updated_data.coordinateX = 0.0
-        updated_data.coordinateY = 0.0
-        updated_data.coordinateZ = 0.0
-        updated_data.rotationX = 0.0
-        updated_data.rotationY = 0.0
-        updated_data.rotationZ = 0.0
+        updated_data.coordinateX = self.get_field("d", 2200)
+        updated_data.coordinateY = self.get_field("d", 2208)
+        updated_data.coordinateZ = self.get_field("d", 2216)
+        updated_data.rotationX = self.get_field("d", 2224)
+        updated_data.rotationY = self.get_field("d", 2232)
+        updated_data.rotationZ = self.get_field("d", 2240)
 
         #----- END OF 8TH ZONE AT OFFSET 2299 -----#
 
         #----- START OF 9TH ZONE AT OFFSET 2300 -----#
 
-        updated_data.truckBrandId = "" # [stringsize]
-        updated_data.truckBrand = "" # [stringsize]
-        updated_data.truckId = "" # [stringsize]
+        #updated_data.truckBrandId = self.get_array(f"{self.stringsize}c", 2300) # [stringsize]
+        updated_data.truckBrandId = self.get_string(2300)
+        updated_data.truckBrand = self.get_string(2364)
+        updated_data.truckId = self.get_string(2428)
 
-        updated_data.truckName = "" # [stringsize]
-        updated_data.cargoId = "" # [stringsize]
-        updated_data.cargo = "" # [stringsize]
-        updated_data.cityDstId = "" # [stringsize]
-        updated_data.cityDst = "" # [stringsize]
-        updated_data.compDstId = "" # [stringsize]
-        updated_data.compDst = "" # [stringsize]
-        updated_data.citySrcId = "" # [stringsize]
-        updated_data.citySrc = "" # [stringsize]
-        updated_data.compSrcId = "" # [stringsize]
-        updated_data.compSrc = "" # [stringsize]
-        updated_data.shifterType = "" # [16]
+        updated_data.truckName = self.get_string(2492)
+        updated_data.cargoId = self.get_string(2556)
+        updated_data.cargo = self.get_string(2620)
+        updated_data.cityDstId = self.get_string(2684)
+        updated_data.cityDst = self.get_string(2748)
+        updated_data.compDstId = self.get_string(2812)
+        updated_data.compDst = self.get_string(2876)
+        updated_data.citySrcId = self.get_string(2940)
+        updated_data.citySrc = self.get_string(3004)
+        updated_data.compSrcId = self.get_string(3068)
+        updated_data.compSrc = self.get_string(3132)
+        updated_data.shifterType = self.get_string(3196, 16)
 
-        updated_data.truckLicensePlate = "" # [stringsize]
-        updated_data.truckLicensePlateCountryId = "" # [stringsize]
-        updated_data.truckLicensePlateCountry = "" # [stringsize]
+        updated_data.truckLicensePlate = self.get_string(3212)
+        updated_data.truckLicensePlateCountryId = self.get_string(3276)
+        updated_data.truckLicensePlateCountry = self.get_string(3340)
 
-        updated_data.jobMarket = "" # [32]
+        updated_data.jobMarket = self.get_string(3404, 32)
 
-        updated_data.fineOffence = "" # [32]
-        updated_data.ferrySourceName = "" # [stringsize]
-        updated_data.ferryTargetName = "" # [stringsize]
-        updated_data.ferrySourceId = "" # [stringsize]
-        updated_data.ferryTargetId = "" # [stringsize]
-        updated_data.trainSourceName = "" # [stringsize]
-        updated_data.trainTargetName = "" # [stringsize]
-        updated_data.trainSourceId = "" # [stringsize]
-        updated_data.trainTargetId = "" # [stringsize]
+        updated_data.fineOffence = self.get_string(3436, 32)
+        updated_data.ferrySourceName = self.get_string(3468)
+        updated_data.ferryTargetName = self.get_string(3532)
+        updated_data.ferrySourceId = self.get_string(3596)
+        updated_data.ferryTargetId = self.get_string(3660)
+        updated_data.trainSourceName = self.get_string(3724)
+        updated_data.trainTargetName = self.get_string(3788)
+        updated_data.trainSourceId = self.get_string(3852)
+        updated_data.trainTargetId = self.get_string(3916)
 
         #----- END OF 9TH ZONE AT OFFSET 3999 -----#
 
         #----- START OF 10TH ZONE AT OFFSET 4000 -----#
 
-        updated_data.jobIncome = 0
+        updated_data.jobIncome = self.get_field("Q", 4000)
 
         #----- END OF 10TH ZONE AT OFFSET 4199 -----#
 
@@ -337,6 +347,11 @@ class SharedMemory:
     def get_array(self, f, start) -> list:
         array_data = list(struct.unpack(f, self.mmap[start:(start + struct.calcsize(f))]))
         return array_data
+    
+    def get_string(self, start, size = 0) -> str:
+        if size == 0:
+            size = self.stringsize
+        return self.mmap[start:start + size].decode()
 
 class SCS_Trailer:
     def __init__(self) -> None:
@@ -633,7 +648,11 @@ class TelemetryData:
         self.cabinAAX = 0.0
         self.cabinAAY = 0.0
         self.cabinAAZ = 0.0
+        
+        #----- END OF SIXTH ZONE AT OFFSET 1999 -----#
 
+	    #----- START OF 7TH ZONE AT OFFSET 2000 -----#
+        
         self.cabinOffsetX = 0.0
         self.cabinOffsetY = 0.0
         self.cabinOffsetZ = 0.0
