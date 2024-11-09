@@ -2,7 +2,6 @@ from telemetry_data import SharedMemory
 from time import sleep
 
 if __name__ == "__main__":
-    #while True:
-        data = SharedMemory().update()
-        print(data.sdkActive, data.shifterType)
-        #sleep(0.1)
+    data = SharedMemory().update()
+    for tr in data.trailer:
+        print(tr.name)

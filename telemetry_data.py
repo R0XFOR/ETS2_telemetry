@@ -230,7 +230,7 @@ class SharedMemory:
 
         #----- END OF SIXTH ZONE AT OFFSET 1999 -----#
 
-	    #----- START OF 7TH ZONE AT OFFSET 2000 -----#
+        #----- START OF 7TH ZONE AT OFFSET 2000 -----#
 
         updated_data.cabinOffsetX = self.get_field("f", 2000)
         updated_data.cabinOffsetY = self.get_field("f", 2004)
@@ -304,37 +304,125 @@ class SharedMemory:
 
         #----- START OF 11TH ZONE AT OFFSET 4200 -----#
 
-        updated_data.jobCancelledPenalty = 0
-        updated_data.jobDeliveredRevenue = 0
-        updated_data.fineAmount = 0
-        updated_data.tollgatePayAmount = 0
-        updated_data.ferryPayAmount = 0
-        updated_data.trainPayAmount = 0
+        updated_data.jobCancelledPenalty = self.get_field("q", 4200)
+        updated_data.jobDeliveredRevenue = self.get_field("q", 4208)
+        updated_data.fineAmount = self.get_field("q", 4216)
+        updated_data.tollgatePayAmount = self.get_field("q", 4224)
+        updated_data.ferryPayAmount = self.get_field("q", 4232)
+        updated_data.trainPayAmount = self.get_field("q", 4240)
 
         #----- END OF 11TH ZONE AT OFFSET 4299 -----#
 
         #----- START OF 12TH ZONE AT OFFSET 4300 -----#
 
-        updated_data.onJob = False
-        updated_data.jobFinished = False
-        updated_data.jobCancelled = False
-        updated_data.jobDelivered = False
-        updated_data.fined = False
-        updated_data.tollgate = False
-        updated_data.ferry = False
-        updated_data.train = False
-        updated_data.refuel = False
-        updated_data.refuelPayed = False
+        updated_data.onJob = self.get_field("?", 4300)
+        updated_data.jobFinished = self.get_field("?", 4301)
+        updated_data.jobCancelled = self.get_field("?", 4302)
+        updated_data.jobDelivered = self.get_field("?", 4303)
+        updated_data.fined = self.get_field("?", 4304)
+        updated_data.tollgate = self.get_field("?", 4305)
+        updated_data.ferry = self.get_field("?", 4306)
+        updated_data.train = self.get_field("?", 4307)
+        updated_data.refuel = self.get_field("?", 4308)
+        updated_data.refuelPayed = self.get_field("?", 4309)
 
         #----- END OF 12TH ZONE AT OFFSET 4399 -----#
 
-        updated_data.substance = "" #[SUBSTANCE_SIZE][stringsize]
+        #----- START OF 13TH ZONE AT OFFSET 4400 -----#
+
+        updated_data.substance = self.mmap[4400:4400 + self.stringsize * self.SUBSTANCE_SIZE].replace(b"\x00",b" ").decode().split()
 
         #----- END OF 13TH ZONE AT OFFSET 5999 -----#
 
-        #----- START OF 14TH ZONE AT OFFSET 6000 -----//
+        #----- START OF 14TH ZONE AT OFFSET 6000 -----#
 
-        updated_data.trailer = SCS_Trailer() # [10]
+        for tr in updated_data.trailer:
+            #----- START OF FIRST ZONE AT OFFSET 0 -----#
+
+            tr.wheelSteerable = self.get_array("16?", tr.START + 0)
+            tr.wheelSimulated = self.get_array("16?", tr.START + 16)
+            tr.wheelPowered = self.get_array("16?", tr.START + 32)
+            tr.wheelLiftable = self.get_array("16?", tr.START + 48)
+
+            tr.wheelOnGround = self.get_array("16?", tr.START + 64)
+            tr.attached = self.get_field("?", tr.START + 80)
+
+            #----- END OF FIRST ZONE AT OFFSET 83 -----#
+
+            #----- START OF SECOND ZONE AT OFFSET 84 -----#
+             
+            tr.wheelSubstance = self.get_array("16I", tr.START + 84)
+
+            tr.wheelCount = self.get_field("I", tr.START + 148)
+
+            #----- END OF SECOND ZONE AT OFFSET 151 -----#
+
+            #----- START OF THIRD ZONE AT OFFSET 152 -----#
+             
+            tr.cargoDamage = self.get_field("f", tr.START + 152)
+            tr.wearChassis = self.get_field("f", tr.START + 156)
+            tr.wearWheels = self.get_field("f", tr.START + 160)
+            tr.wearBody = self.get_field("f", tr.START + 164)
+            tr.wheelSuspDeflection = self.get_array("16f", tr.START + 168)
+            tr.wheelVelocity = self.get_array("16f", tr.START + 232)
+            tr.wheelSteering = self.get_array("16f", tr.START + 296)
+            tr.wheelRotation = self.get_array("16f", tr.START + 360)
+            tr.wheelLift = self.get_array("16f", tr.START + 424)
+            tr.wheelLiftOffset = self.get_array("16f", tr.START + 488)
+
+            tr.wheelRadius = self.get_array("16f", tr.START + 552)
+
+            #----- END OF THIRD ZONE AT OFFSET 615 -----#
+
+            #----- START OF 4TH ZONE AT OFFSET 616 -----#
+            
+            tr.linearVelocityX = self.get_field("f", tr.START + 616)
+            tr.linearVelocityY = self.get_field("f", tr.START + 620)
+            tr.linearVelocityZ = self.get_field("f", tr.START + 624)
+            tr.angularVelocityX = self.get_field("f", tr.START + 628)
+            tr.angularVelocityY = self.get_field("f", tr.START + 632)
+            tr.angularVelocityZ = self.get_field("f", tr.START + 636)
+            tr.linearAccelerationX = self.get_field("f", tr.START + 640)
+            tr.linearAccelerationY = self.get_field("f", tr.START + 644)
+            tr.linearAccelerationZ = self.get_field("f", tr.START + 648)
+            tr.angularAccelerationX = self.get_field("f", tr.START + 652)
+            tr.angularAccelerationY = self.get_field("f", tr.START + 656)
+            tr.angularAccelerationZ = self.get_field("f", tr.START + 660)
+
+            tr.hookPositionX = self.get_field("f", tr.START + 664)
+            tr.hookPositionY = self.get_field("f", tr.START + 668)
+            tr.hookPositionZ = self.get_field("f", tr.START + 672)
+            tr.wheelPositionX = self.get_array("16f", tr.START + 676)
+            tr.wheelPositionY = self.get_array("16f", tr.START + 740)
+            tr.wheelPositionZ = self.get_array("16f", tr.START + 804)
+
+            #----- END OF 4TH ZONE AT OFFSET 871 -----#
+
+            #----- START OF 5TH ZONE AT OFFSET 872 -----#
+              
+            tr.worldX = self.get_field("d", tr.START + 872)
+            tr.worldY = self.get_field("d", tr.START + 880)
+            tr.worldZ = self.get_field("d", tr.START + 888)
+            tr.rotationX = self.get_field("d", tr.START + 896)
+            tr.rotationY = self.get_field("d", tr.START + 904)
+            tr.rotationZ = self.get_field("d", tr.START + 912)
+
+            #----- END OF 5TH ZONE AT OFFSET 919 -----#
+
+            #----- START OF 6TH ZONE AT OFFSET 920 -----#
+              
+            tr.id = "" # [stringsize]
+            tr.cargoAcessoryId = "" # [stringsize]
+            tr.bodyType = "" # [stringsize]
+            tr.brandId = "" # [stringsize]
+            tr.brand = "" # [stringsize]
+            tr.name = "" # [stringsize]
+            tr.chainType = "" # [stringsize]
+            tr.licensePlate = "" # [stringsize]
+            tr.licensePlateCountry = "" # [stringsize]
+            tr.licensePlateCountryId = "" # [stringsize]
+
+            #----- END OF 6TH ZONE AT OFFSET 1559 -----#
 
         #----- END OF 14TH ZONE AT OFFSET 21619 -----#
 
@@ -354,7 +442,9 @@ class SharedMemory:
         return self.mmap[start:start + size].decode()
 
 class SCS_Trailer:
-    def __init__(self) -> None:
+    def __init__(self, start_addr:int) -> None:
+        self.START = start_addr
+
         #----- START OF FIRST ZONE AT OFFSET 0 -----#
 
         self.wheelSteerable = [False] * 16
@@ -367,7 +457,7 @@ class SCS_Trailer:
 
         #----- END OF FIRST ZONE AT OFFSET 83 -----#
 
-	    #----- START OF SECOND ZONE AT OFFSET 84 -----#
+        #----- START OF SECOND ZONE AT OFFSET 84 -----#
          
         self.wheelSubstance = [0] * 16
 
@@ -375,7 +465,7 @@ class SCS_Trailer:
 
         #----- END OF SECOND ZONE AT OFFSET 151 -----#
 
-	    #----- START OF THIRD ZONE AT OFFSET 152 -----#
+        #----- START OF THIRD ZONE AT OFFSET 152 -----#
          
         self.cargoDamage = 0.0
         self.wearChassis = 0.0
@@ -387,6 +477,9 @@ class SCS_Trailer:
         self.wheelRotation = [0.0] * 16
         self.wheelLift = [0.0] * 16
         self.wheelLiftOffset = [0.0] * 16
+
+        self.wheelRadius = [0.0] * 16
+
         #----- END OF THIRD ZONE AT OFFSET 615 -----#
 
         #----- START OF 4TH ZONE AT OFFSET 616 -----#
@@ -651,7 +744,7 @@ class TelemetryData:
         
         #----- END OF SIXTH ZONE AT OFFSET 1999 -----#
 
-	    #----- START OF 7TH ZONE AT OFFSET 2000 -----#
+        #----- START OF 7TH ZONE AT OFFSET 2000 -----#
         
         self.cabinOffsetX = 0.0
         self.cabinOffsetY = 0.0
@@ -754,6 +847,6 @@ class TelemetryData:
 
         #----- START OF 14TH ZONE AT OFFSET 6000 -----//
 
-        self.trailer = SCS_Trailer() # [10]
+        self.trailer = [SCS_Trailer(6000), SCS_Trailer(7560), SCS_Trailer(9120), SCS_Trailer(10680), SCS_Trailer(12240), SCS_Trailer(13800), SCS_Trailer(15360), SCS_Trailer(16920), SCS_Trailer(18480), SCS_Trailer(20040)]
 
         #----- END OF 14TH ZONE AT OFFSET 21619 -----#
